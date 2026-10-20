@@ -1,0 +1,36 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #12121c; color: #eee; }
+#app { max-width: 720px; margin: auto; padding: 12px; }
+.card { background: #1d1d2e; border: 2px solid #333; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+.card.boss.locked { opacity: .5; }
+button { background: #2a2a40; color: #fff; border: 0; border-radius: 10px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+button.primary { background: #7b5cff; }
+button.small { padding: 6px 10px; font-size: 13px; }
+button.danger { background: #c0392b; }
+button:disabled { opacity: .4; }
+input { background: #12121c; color: #fff; border: 1px solid #444; border-radius: 8px; padding: 9px; width: 100%; margin: 4px 0; }
+.row { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin: 8px 0; flex-wrap: wrap; }
+.row input { width: 80px; }
+form { display: flex; flex-direction: column; gap: 6px; }
+.auth { max-width: 380px; margin: 40px auto; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.tabs button.active { background: #7b5cff; }
+.top { display: flex; gap: 8px; align-items: center; }
+.top .avatar { font-size: 32px; }
+.top button { margin-left: auto; }
+.hp { height: 14px; background: #400; border-radius: 7px; overflow: hidden; margin: 8px 0; }
+.hp div { height: 100%; background: linear-gradient(90deg, #e74c3c, #f1c40f); transition: width .4s; }
+.avatars { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 6px; }
+.av { font-size: 26px; padding: 6px; }
+.av.sel { outline: 3px solid #7b5cff; }
+.acts button { margin: 2px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid #333; padding: 6px; text-align: left; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; padding: 12px 18px; border-radius: 12px; z-index: 9; max-width: 90%; }
+.modal { position: fixed; inset: 0; background: #000a; display: flex; align-items: center; justify-content: center; z-index: 10; padding: 16px; }
+.modal-box { max-width: 420px; text-align: center; }
+.phrase { font-style: italic; font-size: 18px; color: #ffd166; }
+.badge { background: #f1c40f; color: #000; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+.err { color: #ff6b6b; }
+.shake { animation: shake .3s; }
+@keyframes shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } }
