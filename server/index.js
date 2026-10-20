@@ -1,30 +1,49 @@
 import express from 'express';
-import 'dotenv/config';
-import pg from 'pg';
+import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import pg from 'pg';
+
 import { BOSSES, ACTIVITY, STATS, damageFor, meets } from './bosses.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { DATABASE_URL, JWT_SECRET = 'dev-secret-change-me', PORT = 3000 } = process.env;
+// Настройка путей и загрузка .env
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envResult = dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'secret-jwt-key';
+
+console.log('--- Диагностика .env ---');
+if (envResult.error) {
+  console.error('Ошибка загрузки .env файла:', envResult.error);
+} else {
+  console.log('Загруженные ключи:', Object.keys(envResult.parsed || {}));
+}
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Присутствует' : 'Отсутствует');
+console.log('------------------------');
+
 const { Pool } = pg;
 
-import cors from 'cors';
-
+// Express приложение
+const app = express();
 app.use(cors());
+app.use(express.json());
 
 // ---------- База данных ----------
+console.log('Подключение к БД:', process.env.DATABASE_URL ? 'URL найден' : 'URL НЕ НАЙДЕН!');
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 });
-
-
 
 // ---------- Утилиты ----------
 const fail = (status, message) => Object.assign(new Error(message), { status });
@@ -46,6 +65,7 @@ async function auth(req, res, next) {
     res.status(401).json({ error: 'Войдите в аккаунт' });
   }
 }
+
 const admin = (req, res, next) =>
   req.user.role === 'admin' ? next() : res.status(403).json({ error: 'Только для администратора' });
 
@@ -90,10 +110,7 @@ async function getState(uid) {
   return { user: u, stats, bosses, trainedToday: t.trained, attackedToday: t.attacked };
 }
 
-// ---------- Express ----------
-const app = express();
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// ---------- Express роуты ----------
 
 // ----- Регистрация и вход -----
 app.post('/api/register', wrap(async (req, res) => {
@@ -246,5 +263,5 @@ app.post('/api/admin/users/:id/boss', auth, admin, wrap(async (req, res) => {
 }));
 
 app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
- export default app;
-  
+
+export default app;
