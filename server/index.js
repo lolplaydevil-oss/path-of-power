@@ -244,5 +244,5 @@ app.post('/api/admin/users/:id/boss', auth, admin, wrap(async (req, res) => {
 }));
 
 app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
-
+   export default app;
   
