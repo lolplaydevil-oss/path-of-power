@@ -12,7 +12,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const { DATABASE_URL, JWT_SECRET = 'dev-secret-change-me', PORT = 3000 } = process.env;
 const { Pool } = pg;
 
+import cors from 'cors';
 
+app.use(cors());
 
 // ---------- База данных ----------
 const pool = new Pool({
@@ -244,5 +246,5 @@ app.post('/api/admin/users/:id/boss', auth, admin, wrap(async (req, res) => {
 }));
 
 app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
-   export default app;
+ export default app;
   
